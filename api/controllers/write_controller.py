@@ -20,9 +20,13 @@ def add_liquidity(body=None):  # noqa: E501
     if connexion.request.is_json:
         body = LiquidityPool.from_dict(connexion.request.get_json())  # noqa: E501
 
-    r = db.tablePools.put_item(
-        Item=body.to_dict()
-    )
+    r = db.tablePools.get_item(Key={'symbol': body.symbol})
+    if 'Item' in r:
+        it = LiquidityPool.from_dict(r['Item'])
+        body.amount_native += it.amount_native
+        body.amount_symbol += it.amount_symbol
+
+    r = db.tablePools.put_item(Item=body.to_dict())
 
     return body
 
@@ -39,7 +43,19 @@ def drain_liquidity(body=None):  # noqa: E501
     """
     if connexion.request.is_json:
         body = LiquidityPool.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+
+    r = db.tablePools.get_item(Key={'symbol': body.symbol})
+    if 'Item' in r:
+        it = LiquidityPool.from_dict(r['Item'])
+        body.amount_native = it.amount_native - body.amount_native
+        body.amount_symbol = it.amount_symbol - body.amount_symbol
+        if body.amount_symbol < 0 or body.amount_native < 0:
+            return 'bad input, not enough amount in pools', 400
+        else:
+            r = db.tablePools.put_item(Item=body.to_dict())
+            return body
+    else:
+        return "symbol's pool pair not found", 404
 
 
 def swap_tokens(body=None):  # noqa: E501

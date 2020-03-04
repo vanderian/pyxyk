@@ -149,7 +149,7 @@ paths:
                 $ref: '#/components/schemas/TokenSwap'
         "400":
           description: invalid input amount
-        "401":
+        "404":
           description: symbol not found
       x-openapi-router-controller: api.controllers.write_controller
   /swaps:
