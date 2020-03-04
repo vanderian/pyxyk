@@ -8,9 +8,7 @@ Python 3.5.2+
 
 ```
 $ npm install -g serverless
-$ serverless install --url https://github.com/alexdebrie/serverless-flask --name my-flask-app
-$ cd my-flask-app && npm run setup
-<answer prompts>
+$ npm run setup
 $ serverless deploy
 ```
 
@@ -84,12 +82,14 @@ tox
 
 ## Running with Docker
 
+TODO
+
 To run the server on a Docker container, please execute the following from the root directory:
 
 ```bash
 # building the image
-docker build -t swagger_server .
+docker build -t pyxyk_api .
 
 # starting up a container
-docker run -p 8080:8080 swagger_server
+docker run -p 8080:8080 pyxyk_api
 ```
