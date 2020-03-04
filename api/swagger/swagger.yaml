@@ -1,0 +1,234 @@
+openapi: 3.0.0
+info:
+  title: XYK token swap API
+  description: REST API spec for XYK token swap
+  contact:
+    email: vanderka.marian@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/vanderian/pyxyk/1.0.0
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: write
+  description: write calls which alter the liquidity pools
+- name: read
+  description: read only calls
+paths:
+  /liquidity/add:
+    post:
+      tags:
+      - write
+      summary: adds liquidity pools for swap pair
+      description: "Deposit to liqudity pools for native/token pair for\nexisting\
+        \ or new token symbol \n"
+      operationId: add_liquidity
+      requestBody:
+        description: Liquidity pool to add/update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LiquidityPool'
+      responses:
+        "200":
+          description: updated liquidity pool amounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiquidityPool'
+        "400":
+          description: bad input parameter
+      x-openapi-router-controller: api.controllers.write_controller
+  /liquidity/drain:
+    post:
+      tags:
+      - write
+      summary: drain liquidity from swap pair pools
+      description: Drain liqudity pools for native/token pair for existing symbol
+      operationId: drain_liquidity
+      requestBody:
+        description: Liquidity pool to drain
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LiquidityPool'
+      responses:
+        "200":
+          description: updated liquidity pool amounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiquidityPool'
+        "400":
+          description: bad input parameter
+        "404":
+          description: symbol's pool pair not found
+      x-openapi-router-controller: api.controllers.write_controller
+  /liquidity/pools:
+    get:
+      tags:
+      - read
+      summary: get swap pairs
+      description: Get existing swap pairs with pools
+      operationId: get_liquidity
+      responses:
+        "200":
+          description: liquidity pools
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LiquidityPool'
+                x-content-type: application/json
+      x-openapi-router-controller: api.controllers.read_controller
+  /swap:
+    post:
+      tags:
+      - write
+      summary: swap tokens and update pools
+      description: Swap tokens defined by in & out symbols and input amount
+      operationId: swap_tokens
+      requestBody:
+        description: tokens to swap with amount
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SwapInput'
+      responses:
+        "200":
+          description: token swap
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenSwap'
+        "400":
+          description: invalid input amount
+        "401":
+          description: symbol not found
+      x-openapi-router-controller: api.controllers.write_controller
+  /rate:
+    post:
+      tags:
+      - read
+      summary: get swap rate without updating pools
+      description: Get token swap rate defined by in & out symbols and input amount
+      operationId: rate_tokens
+      requestBody:
+        description: tokens to get rate with amount
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SwapInput'
+      responses:
+        "200":
+          description: token rate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenSwap'
+        "400":
+          description: invalid input amount
+        "401":
+          description: symbol not found
+      x-openapi-router-controller: api.controllers.read_controller
+  /swaps:
+    get:
+      tags:
+      - read
+      summary: get token swaps
+      description: Get existing token swaps
+      operationId: get_token_swaps
+      responses:
+        "200":
+          description: token swaps
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TokenSwap'
+                x-content-type: application/json
+      x-openapi-router-controller: api.controllers.read_controller
+components:
+  schemas:
+    LiquidityPool:
+      required:
+      - amountNative
+      - amountSymbol
+      - symbol
+      type: object
+      properties:
+        symbol:
+          type: string
+          example: USD
+        amountNative:
+          minimum: 0
+          type: number
+          format: float
+          example: 100
+        amountSymbol:
+          minimum: 0
+          type: number
+          format: float
+          example: 200
+      example:
+        symbol: USD
+        amountSymbol: 200
+        amountNative: 100
+    SwapInput:
+      required:
+      - amount
+      - symbolIn
+      - symbolOut
+      type: object
+      properties:
+        symbolIn:
+          type: string
+          example: USD
+        symbolOut:
+          type: string
+          example: EUR
+        amount:
+          minimum: 0
+          type: number
+          format: float
+          example: 100
+    TokenSwap:
+      required:
+      - amountIn
+      - amountOut
+      - swapDate
+      - symbolIn
+      - symbolOut
+      type: object
+      properties:
+        symbolIn:
+          type: string
+          example: USD
+        symbolOut:
+          type: string
+          example: EUR
+        amountIn:
+          minimum: 0
+          type: number
+          format: float
+          example: 100
+        amountOut:
+          minimum: 0
+          type: number
+          format: float
+          example: 100
+        swapDate:
+          type: string
+          format: date-time
+          example: 2020-02-27T09:12:33.001Z
+      example:
+        symbolOut: EUR
+        amountIn: 100
+        amountOut: 100
+        swapDate: 2020-02-27T09:12:33.001Z
+        symbolIn: USD
+
