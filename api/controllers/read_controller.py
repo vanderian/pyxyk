@@ -2,7 +2,6 @@ import connexion
 import six
 
 from api.models.liquidity_pool import LiquidityPool  # noqa: E501
-from api.models.swap_input import SwapInput  # noqa: E501
 from api.models.token_swap import TokenSwap  # noqa: E501
 from api import util
 
@@ -18,6 +17,23 @@ def get_liquidity():  # noqa: E501
     return 'do some magic!'
 
 
+def get_swap_rate(symbol_in, symbol_out, amount):  # noqa: E501
+    """get swap rate
+
+    Get token swap rate defined by in &amp; out symbols and input amount # noqa: E501
+
+    :param symbol_in: symbol to convert from
+    :type symbol_in: str
+    :param symbol_out: symbol to convert to
+    :type symbol_out: str
+    :param amount: amount to convert
+    :type amount: float
+
+    :rtype: TokenSwap
+    """
+    return 'do some magic!'
+
+
 def get_token_swaps():  # noqa: E501
     """get token swaps
 
@@ -26,19 +42,4 @@ def get_token_swaps():  # noqa: E501
 
     :rtype: List[TokenSwap]
     """
-    return 'do some magic!'
-
-
-def rate_tokens(body=None):  # noqa: E501
-    """get swap rate without updating pools
-
-    Get token swap rate defined by in &amp; out symbols and input amount # noqa: E501
-
-    :param body: tokens to get rate with amount
-    :type body: dict | bytes
-
-    :rtype: TokenSwap
-    """
-    if connexion.request.is_json:
-        body = SwapInput.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'

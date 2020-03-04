@@ -18,8 +18,11 @@ provider:
   stage: dev
   region: us-east-1
 functions:
-  app:
+  write:
     handler: wsgi_handler.handler
     events:
-      - http: ANY /
-      - http: 'ANY {proxy+}'
+      - http: 'POST {proxy+}'
+  read:
+    handler: wsgi_handler.handler
+    events:
+      - http: 'GET {proxy+}'
