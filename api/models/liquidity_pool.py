@@ -2,6 +2,7 @@
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
+from decimal import Decimal
 
 from typing import List, Dict  # noqa: F401
 
@@ -14,20 +15,20 @@ class LiquidityPool(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, symbol: str=None, amount_native: float=None, amount_symbol: float=None):  # noqa: E501
+    def __init__(self, symbol: str=None, amount_native: Decimal=None, amount_symbol: Decimal=None):  # noqa: E501
         """LiquidityPool - a model defined in Swagger
 
         :param symbol: The symbol of this LiquidityPool.  # noqa: E501
         :type symbol: str
         :param amount_native: The amount_native of this LiquidityPool.  # noqa: E501
-        :type amount_native: float
+        :type amount_native: Decimal
         :param amount_symbol: The amount_symbol of this LiquidityPool.  # noqa: E501
-        :type amount_symbol: float
+        :type amount_symbol: Decimal
         """
         self.swagger_types = {
             'symbol': str,
-            'amount_native': float,
-            'amount_symbol': float
+            'amount_native': Decimal,
+            'amount_symbol': Decimal
         }
 
         self.attribute_map = {
@@ -74,22 +75,22 @@ class LiquidityPool(Model):
         self._symbol = symbol
 
     @property
-    def amount_native(self) -> float:
+    def amount_native(self) -> Decimal:
         """Gets the amount_native of this LiquidityPool.
 
 
         :return: The amount_native of this LiquidityPool.
-        :rtype: float
+        :rtype: Decimal
         """
         return self._amount_native
 
     @amount_native.setter
-    def amount_native(self, amount_native: float):
+    def amount_native(self, amount_native: Decimal):
         """Sets the amount_native of this LiquidityPool.
 
 
         :param amount_native: The amount_native of this LiquidityPool.
-        :type amount_native: float
+        :type amount_native: Decimal
         """
         if amount_native is None:
             raise ValueError("Invalid value for `amount_native`, must not be `None`")  # noqa: E501
@@ -97,22 +98,22 @@ class LiquidityPool(Model):
         self._amount_native = amount_native
 
     @property
-    def amount_symbol(self) -> float:
+    def amount_symbol(self) -> Decimal:
         """Gets the amount_symbol of this LiquidityPool.
 
 
         :return: The amount_symbol of this LiquidityPool.
-        :rtype: float
+        :rtype: Decimal
         """
         return self._amount_symbol
 
     @amount_symbol.setter
-    def amount_symbol(self, amount_symbol: float):
+    def amount_symbol(self, amount_symbol: Decimal):
         """Sets the amount_symbol of this LiquidityPool.
 
 
         :param amount_symbol: The amount_symbol of this LiquidityPool.
-        :type amount_symbol: float
+        :type amount_symbol: Decimal
         """
         if amount_symbol is None:
             raise ValueError("Invalid value for `amount_symbol`, must not be `None`")  # noqa: E501

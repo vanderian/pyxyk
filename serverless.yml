@@ -2,21 +2,45 @@ service: pyxyk
 plugins:
   - serverless-python-requirements
   - serverless-wsgi
+  - serverless-dynamodb-local
+
 custom:
+  tableNamePools: 'pools-table-${self:provider.stage}'
   wsgi:
     app: api/app.app
     packRequirements: false
   pythonRequirements:
     dockerizePip: true
+  dynamodb:
+    stages:
+      dev
+    start:
+      migrate: true
+
 package:
   exclude:
     - node_modules/**
     - venv/**
+
 provider:
   name: aws
   runtime: python3.7
   stage: dev
   region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - { "Fn::GetAtt": ["UsersDynamoDBTable", "Arn" ] }
+  environment:
+    POOLS_TABLE: ${self:custom.tableNamePools}
+
 functions:
   write:
     handler: wsgi_handler.handler
@@ -26,3 +50,19 @@ functions:
     handler: wsgi_handler.handler
     events:
       - http: 'GET {proxy+}'
+
+resources:
+  Resources:
+    PoolsDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: symbol
+            AttributeType: S
+        KeySchema:
+          - AttributeName: symbol
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.tableNamePools}

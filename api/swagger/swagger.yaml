@@ -85,6 +85,49 @@ paths:
                 x-content-type: application/json
       x-openapi-router-controller: api.controllers.read_controller
   /swap:
+    get:
+      tags:
+      - read
+      summary: get swap rate
+      description: Get token swap rate defined by in & out symbols and input amount
+      operationId: get_swap_rate
+      parameters:
+      - name: symbolIn
+        in: query
+        description: symbol to convert from
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: symbolOut
+        in: query
+        description: symbol to convert to
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: amount
+        in: query
+        description: amount to convert
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+      responses:
+        "200":
+          description: token rate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenSwap'
+        "400":
+          description: invalid input amount
+        "401":
+          description: symbol not found
+      x-openapi-router-controller: api.controllers.read_controller
     post:
       tags:
       - write
@@ -109,31 +152,6 @@ paths:
         "401":
           description: symbol not found
       x-openapi-router-controller: api.controllers.write_controller
-  /rate:
-    post:
-      tags:
-      - read
-      summary: get swap rate without updating pools
-      description: Get token swap rate defined by in & out symbols and input amount
-      operationId: rate_tokens
-      requestBody:
-        description: tokens to get rate with amount
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SwapInput'
-      responses:
-        "200":
-          description: token rate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TokenSwap'
-        "400":
-          description: invalid input amount
-        "401":
-          description: symbol not found
-      x-openapi-router-controller: api.controllers.read_controller
   /swaps:
     get:
       tags:

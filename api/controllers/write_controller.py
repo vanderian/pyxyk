@@ -4,7 +4,7 @@ import six
 from api.models.liquidity_pool import LiquidityPool  # noqa: E501
 from api.models.swap_input import SwapInput  # noqa: E501
 from api.models.token_swap import TokenSwap  # noqa: E501
-from api import util
+from api import util, db
 
 
 def add_liquidity(body=None):  # noqa: E501
@@ -19,7 +19,12 @@ def add_liquidity(body=None):  # noqa: E501
     """
     if connexion.request.is_json:
         body = LiquidityPool.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+
+    r = db.tablePools.put_item(
+        Item=body.to_dict()
+    )
+
+    return body
 
 
 def drain_liquidity(body=None):  # noqa: E501

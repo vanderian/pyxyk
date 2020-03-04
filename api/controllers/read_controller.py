@@ -3,7 +3,7 @@ import six
 
 from api.models.liquidity_pool import LiquidityPool  # noqa: E501
 from api.models.token_swap import TokenSwap  # noqa: E501
-from api import util
+from api import util, db
 
 
 def get_liquidity():  # noqa: E501
@@ -14,7 +14,9 @@ def get_liquidity():  # noqa: E501
 
     :rtype: List[LiquidityPool]
     """
-    return 'do some magic!'
+    r = db.tablePools.scan()
+
+    return r["Items"]
 
 
 def get_swap_rate(symbol_in, symbol_out, amount):  # noqa: E501

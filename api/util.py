@@ -1,4 +1,5 @@
 import datetime
+from decimal import Decimal
 
 import six
 import typing
@@ -15,7 +16,7 @@ def _deserialize(data, klass):
     if data is None:
         return None
 
-    if klass in six.integer_types or klass in (float, str, bool):
+    if klass in six.integer_types or klass in (float, str, bool, Decimal):
         return _deserialize_primitive(data, klass)
     elif klass == object:
         return _deserialize_object(data)
