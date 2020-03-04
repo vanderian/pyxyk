@@ -2,6 +2,7 @@
 
 from __future__ import absolute_import
 from datetime import date, datetime  # noqa: F401
+from decimal import Decimal
 
 from typing import List, Dict  # noqa: F401
 
@@ -14,7 +15,8 @@ class SwapInput(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, symbol_in: str=None, symbol_out: str=None, amount: float=None):  # noqa: E501
+
+    def __init__(self, symbol_in: str = None, symbol_out: str = None, amount: Decimal = None):  # noqa: E501
         """SwapInput - a model defined in Swagger
 
         :param symbol_in: The symbol_in of this SwapInput.  # noqa: E501
@@ -22,12 +24,12 @@ class SwapInput(Model):
         :param symbol_out: The symbol_out of this SwapInput.  # noqa: E501
         :type symbol_out: str
         :param amount: The amount of this SwapInput.  # noqa: E501
-        :type amount: float
+        :type amount: Decimal
         """
         self.swagger_types = {
             'symbol_in': str,
             'symbol_out': str,
-            'amount': float
+            'amount': Decimal
         }
 
         self.attribute_map = {
@@ -97,22 +99,22 @@ class SwapInput(Model):
         self._symbol_out = symbol_out
 
     @property
-    def amount(self) -> float:
+    def amount(self) -> Decimal:
         """Gets the amount of this SwapInput.
 
 
         :return: The amount of this SwapInput.
-        :rtype: float
+        :rtype: Decimal
         """
         return self._amount
 
     @amount.setter
-    def amount(self, amount: float):
+    def amount(self, amount: Decimal):
         """Sets the amount of this SwapInput.
 
 
         :param amount: The amount of this SwapInput.
-        :type amount: float
+        :type amount: Decimal
         """
         if amount is None:
             raise ValueError("Invalid value for `amount`, must not be `None`")  # noqa: E501

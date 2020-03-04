@@ -37,6 +37,16 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+Install and start DynamoDB Local
+
+```
+sls dynamodb install
+sls dynamodb start
+* Dynamodb Local Started, Visit: http://localhost:8000/shell
+* Serverless: DynamoDB - created table pools-table-dev
+* Serverless: DynamoDB - created table swaps-table-dev
+```
+
 Then, run your app:
 
 ```

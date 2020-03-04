@@ -1,7 +1,10 @@
 # coding: utf-8
 
 from __future__ import absolute_import
+
+import uuid
 from datetime import date, datetime  # noqa: F401
+from decimal import Decimal
 
 from typing import List, Dict  # noqa: F401
 
@@ -14,7 +17,9 @@ class TokenSwap(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, symbol_in: str=None, symbol_out: str=None, amount_in: float=None, amount_out: float=None, swap_date: datetime=None):  # noqa: E501
+
+    def __init__(self, symbol_in: str = None, symbol_out: str = None, amount_in: Decimal = None,
+                 amount_out: Decimal = None, swap_date: datetime = datetime.utcnow()):  # noqa: E501
         """TokenSwap - a model defined in Swagger
 
         :param symbol_in: The symbol_in of this TokenSwap.  # noqa: E501
@@ -22,17 +27,17 @@ class TokenSwap(Model):
         :param symbol_out: The symbol_out of this TokenSwap.  # noqa: E501
         :type symbol_out: str
         :param amount_in: The amount_in of this TokenSwap.  # noqa: E501
-        :type amount_in: float
+        :type amount_in: Decimal
         :param amount_out: The amount_out of this TokenSwap.  # noqa: E501
-        :type amount_out: float
+        :type amount_out: Decimal
         :param swap_date: The swap_date of this TokenSwap.  # noqa: E501
         :type swap_date: datetime
         """
         self.swagger_types = {
             'symbol_in': str,
             'symbol_out': str,
-            'amount_in': float,
-            'amount_out': float,
+            'amount_in': Decimal,
+            'amount_out': Decimal,
             'swap_date': datetime
         }
 
@@ -107,22 +112,22 @@ class TokenSwap(Model):
         self._symbol_out = symbol_out
 
     @property
-    def amount_in(self) -> float:
+    def amount_in(self) -> Decimal:
         """Gets the amount_in of this TokenSwap.
 
 
         :return: The amount_in of this TokenSwap.
-        :rtype: float
+        :rtype: Decimal
         """
         return self._amount_in
 
     @amount_in.setter
-    def amount_in(self, amount_in: float):
+    def amount_in(self, amount_in: Decimal):
         """Sets the amount_in of this TokenSwap.
 
 
         :param amount_in: The amount_in of this TokenSwap.
-        :type amount_in: float
+        :type amount_in: Decimal
         """
         if amount_in is None:
             raise ValueError("Invalid value for `amount_in`, must not be `None`")  # noqa: E501
@@ -130,22 +135,22 @@ class TokenSwap(Model):
         self._amount_in = amount_in
 
     @property
-    def amount_out(self) -> float:
+    def amount_out(self) -> Decimal:
         """Gets the amount_out of this TokenSwap.
 
 
         :return: The amount_out of this TokenSwap.
-        :rtype: float
+        :rtype: Decimal
         """
         return self._amount_out
 
     @amount_out.setter
-    def amount_out(self, amount_out: float):
+    def amount_out(self, amount_out: Decimal):
         """Sets the amount_out of this TokenSwap.
 
 
         :param amount_out: The amount_out of this TokenSwap.
-        :type amount_out: float
+        :type amount_out: Decimal
         """
         if amount_out is None:
             raise ValueError("Invalid value for `amount_out`, must not be `None`")  # noqa: E501

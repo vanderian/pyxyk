@@ -10,6 +10,7 @@ from api.models.swap_input import SwapInput  # noqa: E501
 from api.models.token_swap import TokenSwap  # noqa: E501
 from api.test import BaseTestCase
 
+
 class TestReadController(BaseTestCase):
     """ReadController integration test stubs"""
 
@@ -52,4 +53,5 @@ class TestReadController(BaseTestCase):
 
 if __name__ == '__main__':
     import unittest
+
     unittest.main()

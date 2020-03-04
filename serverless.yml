@@ -6,6 +6,7 @@ plugins:
 
 custom:
   tableNamePools: 'pools-table-${self:provider.stage}'
+  tableNameSwaps: 'swaps-table-${self:provider.stage}'
   wsgi:
     app: api/app.app
     packRequirements: false
@@ -37,9 +38,11 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
-        - { "Fn::GetAtt": ["UsersDynamoDBTable", "Arn" ] }
+        - { "Fn::GetAtt": ["PoolsDynamoDBTable", "Arn" ] }
+        - { "Fn::GetAtt": ["SwapsDynamoDBTable", "Arn" ] }
   environment:
     POOLS_TABLE: ${self:custom.tableNamePools}
+    SWAPS_TABLE: ${self:custom.tableNameSwaps}
 
 functions:
   write:
@@ -66,3 +69,16 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:custom.tableNamePools}
+    SwapsDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.tableNameSwaps}
