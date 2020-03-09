@@ -101,6 +101,14 @@ def test_swap_token_to_token(setup):
     response = swap_tokens(event, None)
     assert parse_response_ok(response) == expected
 
+    lps = [
+        schema.load({'tokenSymbol': 'EUR', 'poolNative': 1009.4105993065874, 'poolToken': 991.1391472963353}),
+        schema.load({'tokenSymbol': 'USD', 'poolNative': 990.5894006934126, 'poolToken': 1010}),
+    ]
+    expected = list(map(lambda lp: schema.dump(lp), lps))
+    response = get_liquidity_pools(None, None)
+    assert parse_response_ok(response) == expected
+
 
 def test_read_pools(setup):
     expected = [
@@ -120,8 +128,8 @@ def test_swap_rate_token_to_token(setup):
 
     schema = LiquidityPoolSchema()
     lps = [
-        schema.load({'tokenSymbol': 'USD', 'poolNative': 1000, 'poolToken': 1000}),
         schema.load({'tokenSymbol': 'EUR', 'poolNative': 1000, 'poolToken': 1000}),
+        schema.load({'tokenSymbol': 'USD', 'poolNative': 1000, 'poolToken': 1000}),
     ]
     for lp in lps:
         LiquidityPools(**lp).save()
@@ -129,6 +137,11 @@ def test_swap_rate_token_to_token(setup):
                 "createdAt": MOCKED_DATETIME}
 
     response = get_swap_rate(event, None)
+    assert parse_response_ok(response) == expected
+
+    # pools should remain unchanged
+    expected = list(map(lambda lp: schema.dump(lp), lps))
+    response = get_liquidity_pools(None, None)
     assert parse_response_ok(response) == expected
 
 
