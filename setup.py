@@ -23,8 +23,6 @@ setup(
     keywords=["Swagger", "XYK token swap API"],
     install_requires=REQUIRES,
     packages=find_packages(),
-    package_data={'': ['swagger/swagger.yaml']},
-    include_package_data=True,
     long_description="""\
     REST API spec for XYK token swap
     """

@@ -1,9 +1,8 @@
 service: pyxyk
 plugins:
   - serverless-python-requirements
-  #  - serverless-wsgi
-  - serverless-offline
   - serverless-dynamodb-local
+  - serverless-offline
 
 custom:
   tableNamePools: 'pools-table-${self:provider.stage}'
@@ -25,8 +24,7 @@ package:
     - venv/**
     - .idea/**
     - .requirements/**
-    - Dockerfile
-    - .dockerignore
+    - openapi/**
     - .travis.yml
     - README.md
     - LICENSE
@@ -102,14 +100,6 @@ functions:
           method: get
           cors: true
 
-#  write:
-#    handler: wsgi_handler.handler
-#    events:
-#      - http: 'POST {proxy+}'
-#  read:
-#    handler: wsgi_handler.handler
-#    events:
-#      - http: 'GET {proxy+}'
 
 resources:
   Resources:

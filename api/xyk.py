@@ -1,7 +1,15 @@
-from decimal import Decimal
-
 SWAP_LIQUIDITY_FEE = 0.05
 NATIVE_SYMBOL = "XYK"
+
+'''
+Prices are set automatically using the constant product (x*y=k) market maker mechanism, 
+which keeps overall reserves in relative equilibrium. 
+Reserves are pooled between a network of liquidity providers who supply the system with tokens 
+in exchange for a proportional share of transaction fees. The exchange rate between XYK and an TOKEN is based on the 
+relative sizes of their liquidity pools within the contract. 
+This is done by maintaining the relationship pool_native * pool_token = invariant. 
+This invariant is held constant during trades and only changes when liquidity is added or removed from the market.
+'''
 
 
 def native_to_token(lp: dict, amount: float):

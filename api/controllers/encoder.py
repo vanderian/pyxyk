@@ -15,17 +15,17 @@ def error(code, message=None, errors=None):
     if errors is None:
         errors = {}
 
-    body = {'status_code': code, 'message': message, **errors}
+    body = {'message': message, **errors}
     return create_response(code, body)
 
 
 def validation_error(err: ValidationError):
-    error(422, "input validation error", {"errors": err.messages})
+    return error(422, "input validation error", {"errors": err.messages})
 
 
 def not_found(message):
-    error(404, message)
+    return error(404, message)
 
 
 def bad_input(message):
-    error(400, message)
+    return error(400, message)

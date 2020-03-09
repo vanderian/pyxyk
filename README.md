@@ -79,17 +79,3 @@ To launch the integration tests, use tox:
 sudo pip install tox
 tox
 ```
-
-## Running with Docker
-
-TODO
-
-To run the server on a Docker container, please execute the following from the root directory:
-
-```bash
-# building the image
-docker build -t pyxyk_api .
-
-# starting up a container
-docker run -p 8080:8080 pyxyk_api
-```
