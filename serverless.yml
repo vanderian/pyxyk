@@ -1,17 +1,18 @@
 service: pyxyk
 plugins:
   - serverless-python-requirements
-  - serverless-wsgi
+  #  - serverless-wsgi
+  - serverless-offline
   - serverless-dynamodb-local
 
 custom:
   tableNamePools: 'pools-table-${self:provider.stage}'
   tableNameSwaps: 'swaps-table-${self:provider.stage}'
-  wsgi:
-    app: api/app.app
-    packRequirements: false
-  pythonRequirements:
-    dockerizePip: true
+  #  wsgi:
+  #    app: api/app.app
+  #    packRequirements: false
+  #  pythonRequirements:
+  #    dockerizePip: true
   dynamodb:
     stages:
       dev
@@ -22,12 +23,25 @@ package:
   exclude:
     - node_modules/**
     - venv/**
+    - .idea/**
+    - .requirements/**
+    - Dockerfile
+    - .dockerignore
+    - .travis.yml
+    - README.md
+    - LICENSE
+    - package.json
+    - package-lock.json
+    - requirements.txt
+    - setup.py
+    - test-requirements.txt
+    - tox.ini
 
 provider:
   name: aws
   runtime: python3.7
   stage: dev
-  region: us-east-1
+  region: eu-central-1
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -45,14 +59,57 @@ provider:
     SWAPS_TABLE: ${self:custom.tableNameSwaps}
 
 functions:
-  write:
-    handler: wsgi_handler.handler
+  addPool:
+    handler: api/controllers/write_controller.add_liquidity
     events:
-      - http: 'POST {proxy+}'
-  read:
-    handler: wsgi_handler.handler
+      - http:
+          path: liquidity/add
+          method: post
+          cors: true
+  drainPool:
+    handler: api/controllers/write_controller.drain_liquidity
     events:
-      - http: 'GET {proxy+}'
+      - http:
+          path: liquidity/drain
+          method: post
+          cors: true
+  tokenSwap:
+    handler: api/controllers/write_controller.swap_tokens
+    events:
+      - http:
+          path: swap
+          method: post
+          cors: true
+  getPools:
+    handler: api/controllers/read_controller.get_liquidity_pools
+    events:
+      - http:
+          path: liquidity/pools
+          method: get
+          cors: true
+  getSwaps:
+    handler: api/controllers/read_controller.get_token_swaps
+    events:
+      - http:
+          path: swaps
+          method: get
+          cors: true
+  getRate:
+    handler: api/controllers/read_controller.get_swap_rate
+    events:
+      - http:
+          path: swap
+          method: get
+          cors: true
+
+#  write:
+#    handler: wsgi_handler.handler
+#    events:
+#      - http: 'POST {proxy+}'
+#  read:
+#    handler: wsgi_handler.handler
+#    events:
+#      - http: 'GET {proxy+}'
 
 resources:
   Resources:
@@ -60,10 +117,10 @@ resources:
       Type: 'AWS::DynamoDB::Table'
       Properties:
         AttributeDefinitions:
-          - AttributeName: symbol
+          - AttributeName: token_symbol
             AttributeType: S
         KeySchema:
-          - AttributeName: symbol
+          - AttributeName: token_symbol
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
