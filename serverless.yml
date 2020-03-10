@@ -7,11 +7,6 @@ plugins:
 custom:
   tableNamePools: 'pools-table-${self:provider.stage}'
   tableNameSwaps: 'swaps-table-${self:provider.stage}'
-  #  wsgi:
-  #    app: api/app.app
-  #    packRequirements: false
-  #  pythonRequirements:
-  #    dockerizePip: true
   dynamodb:
     stages:
       dev

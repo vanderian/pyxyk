@@ -35,43 +35,20 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Install and start DynamoDB Local
+Install DynamoDB Local and start serverless offline
 
 ```
 sls dynamodb install
-sls dynamodb start
+sls offline start
 * Dynamodb Local Started, Visit: http://localhost:8000/shell
 * Serverless: DynamoDB - created table pools-table-dev
 * Serverless: DynamoDB - created table swaps-table-dev
+* Serverless: Starting Offline: dev/eu-central-1.
 ```
 
-Then, run your app:
-
+You can use swagger-ui docker image with included openapi definition to test the REST methods. 
 ```
-sls wsgi serve
- * Running on http://localhost:5000/ (Press CTRL+C to quit)
- * Restarting with stat
- * Debugger is active!
-```
-
-To see your app running locally navigate your browser
-to [here:](http://localhost:8080/vanderian/pyxyk/1.0.0/ui/)
-
-```
-http://localhost:8080/vanderian/pyxyk/1.0.0/ui/
-```
-
-Your Swagger definition lives [here:](http://localhost:8080/vanderian/pyxyk/1.0.0/swagger.json)
-
-```
-http://localhost:8080/vanderian/pyxyk/1.0.0/swagger.json
-```
-
-
-To run the server directly, please setup virtualenv and execute the following from the root directory:
-
-```
-python3 -m api.app
+docker run -p 80:8080 -e SWAGGER_JSON=/api/openapi.yaml -v `pwd`/openapi:/api swaggerapi/swagger-ui
 ```
 
 To launch the integration tests, use tox:

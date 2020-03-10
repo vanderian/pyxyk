@@ -184,7 +184,7 @@ components:
           type: number
           format: float
           example: 100
-        poolSymbol:
+        poolToken:
           minimum: 0
           type: number
           format: float

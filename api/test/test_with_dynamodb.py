@@ -5,7 +5,7 @@ from api.controllers.write_controller import add_liquidity, drain_liquidity, swa
 from api.repository.liquidity_pools import LiquidityPools
 from api.repository.token_swaps import TokenSwaps
 from api.schema.liquidity_pool_schema import LiquidityPoolSchema
-from api.test.util import mock_datetime_utcnow, MOCKED_DATETIME, parse_response_ok
+from api.test.util import mock_datetime_utcnow, MOCKED_DATETIME, parse_response_ok, sorted_ts, sorted_lp
 
 
 # WARNING: make sure you have started dynamoDB locally
@@ -120,7 +120,7 @@ def test_read_pools(setup):
         LiquidityPools(**(schema.load(lp))).save()
 
     response = get_liquidity_pools(None, None)
-    assert parse_response_ok(response) == expected
+    assert sorted_lp(parse_response_ok(response)) == sorted_lp(expected)
 
 
 def test_swap_rate_token_to_token(setup):
@@ -163,4 +163,4 @@ def test_get_token_swaps(setup):
     swap_tokens(swap, None)
     response = get_token_swaps(None, None)
 
-    assert parse_response_ok(response) == expected
+    assert sorted_ts(parse_response_ok(response)) == sorted_ts(expected)

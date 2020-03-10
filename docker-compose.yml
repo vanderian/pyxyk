@@ -1,0 +1,20 @@
+version: '3.5'
+services:
+  serverless:
+    build: .
+    tty: true
+    stdin_open: true
+    image: serverless
+    working_dir: /app
+    ports:
+      - "3000:3000"
+      - "8000:8000"
+    container_name: serverless
+    environment:
+      - AWS_SECRET_ACCESS_KEY=SECRETSECRETSECRETSECRETSECRETSECRETSECR
+      - AWS_ACCESS_KEY_ID=SECRETSECRETSECRETSE
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
