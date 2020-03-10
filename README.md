@@ -1,7 +1,7 @@
 # pyxyk
 
 ## Requirements
-Python 3.5.2+
+Python 3.7.+
 
 
 ## Usage
