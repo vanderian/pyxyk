@@ -145,7 +145,8 @@ def test_swap_rate_token_to_token(setup):
     assert parse_response_ok(response) == expected
 
 
-def test_get_token_swaps(setup):
+def test_get_token_swaps_with_paging(setup):
+    event = {'queryStringParameters': {'pageSize': 1}}
     swap = {'body': '{"tokenIn": "XYK", "tokenOut": "USD", "amount": 10}'}
 
     schema = LiquidityPoolSchema()
@@ -161,6 +162,14 @@ def test_get_token_swaps(setup):
 
     swap_tokens(swap, None)
     swap_tokens(swap, None)
-    response = get_token_swaps(None, None)
 
-    assert sorted_ts(parse_response_ok(response)) == sorted_ts(expected)
+    response = get_token_swaps(event, None)
+    parsed = parse_response_ok(response)
+    event = {'queryStringParameters': {'pageSize': 1, 'nextPageId': parsed['nextPageId']}}
+    items = parsed['items']
+    response = get_token_swaps(event, None)
+    parsed = parse_response_ok(response)
+    items += parsed['items']
+
+    assert response.get('nextPageId') is None
+    assert sorted_ts(items) == sorted_ts(expected)

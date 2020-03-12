@@ -46,9 +46,15 @@ def test_get_token_swaps(mocker):
          "createdAt": MOCKED_DATETIME},
     ]
     schema = TokenSwapSchema()
+    mock_list = list(map(lambda ts: TokenSwaps(**schema.load(ts)), expected))
     mock_datetime_utcnow(mocker)
-    mock = mocker.patch('api.repository.token_swaps.TokenSwaps.scan')
-    mock.return_value = list(map(lambda ts: TokenSwaps(**schema.load(ts)), expected))
+    mock_result = mocker.patch('pynamodb.pagination.ResultIterator')
+    mock_result.last_evaluated_key = None
+    mock_result.__iter__.return_value = iter(mock_list)
+    mocker.patch('api.repository.token_swaps.TokenSwaps.scan', return_value=mock_result)
 
-    response = get_token_swaps(None, None)
-    assert parse_response_ok(response) == expected
+    response = get_token_swaps({}, None)
+    parsed = parse_response_ok(response)
+
+    assert parsed.get('nextPageId') is None
+    assert parsed['items'] == expected
