@@ -1,6 +1,3 @@
-import uuid
-from datetime import datetime
-
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute, UTCDateTimeAttribute
 from pynamodb.models import Model
 

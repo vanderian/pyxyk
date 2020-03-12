@@ -1,5 +1,4 @@
-from marshmallow import ValidationError, Schema
-from pynamodb.pagination import ResultIterator
+from marshmallow import ValidationError
 
 from api.controllers.encoder import ok_200, validation_error
 from api.controllers.swap import make_swap

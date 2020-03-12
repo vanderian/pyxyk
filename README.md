@@ -25,6 +25,16 @@ endpoints:
 
 Copy paste into your browser, and _voila_!
 
+## Local development with Docker
+
+Docker image can be used to run the API locally, API is exposed on :3000, local dynamoDb on :8000
+
+```
+docker-compose up -d --build
+docker-compose down
+```
+
+
 ## Local development
 
 To develop locally, create a virtual environment and install your dependencies:
@@ -46,12 +56,18 @@ sls offline start
 * Serverless: Starting Offline: dev/eu-central-1.
 ```
 
+## Testing
+
+End-to-end tests on deployed API are missing, a custom implementation can be made or some tool levering openaapi.yml could be used.
+
 You can use swagger-ui docker image with included openapi definition to test the REST methods. 
 ```
 docker run -p 80:8080 -e SWAGGER_JSON=/api/openapi.yaml -v `pwd`/openapi:/api swaggerapi/swagger-ui
 ```
 
-To launch the integration tests, use tox:
+Some tests require local dynamo db. See local deployment.
+
+To launch the tests use tox:
 ```
 sudo pip install tox
 tox
