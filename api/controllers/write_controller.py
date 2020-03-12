@@ -7,6 +7,18 @@ from api.controllers.swap import make_swap
 from api.repository.liquidity_pools import LiquidityPools
 from api.schema.liquidity_pool_schema import LiquidityPoolSchema
 
+"""
+by XYK design, there is a requirement that all modifications to LiquidityPools should be done in a sequential manner,
+since `add` and `drain` should happen sporadically, we should be ok with optimistic locking and possible error responses
+and we should therefore only consider optimizing the `swaps`
+easiest solution would be to wrap all write handlers behind one lambda handler with limited concurrency
+or we could handle the swaps async and aggregate into time+amount windows (eg. 100ms or <0.001% liquidity reached)
+either way we could end up filling up the queue, introducing delays between swap posted and swap executed,
+which may have a significant effect on the final swap rate
+an optional `limit rate` on final swap rate, and/or `limit rate deviation` on swap rate change between posted and
+ executed rates could be introduced into token swap request
+"""
+
 
 def add_liquidity(event, context):
     """adds liquidity pools for swap pair
