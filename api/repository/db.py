@@ -17,3 +17,8 @@ if IS_OFFLINE:
     connection = Connection(host='http://localhost:8000')
 else:
     connection = Connection()
+
+"""
+would be very reasonable to wrap DB models behind repository classes to separate
+app storage requirements from DB implementation, would also benefit mocks in testing 
+"""
