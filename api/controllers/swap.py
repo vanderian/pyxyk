@@ -22,6 +22,9 @@ def make_swap(json_data, save: bool = False):
     except ValidationError as err:
         return validation_error(err)
 
+    if data['token_in'] == data['token_out']:
+        return bad_input('cannot swap token with itself')
+
     if data['token_in'] == xyk.NATIVE_SYMBOL:
         key = data['token_out']
         fn = xyk.native_to_token

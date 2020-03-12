@@ -158,15 +158,70 @@ paths:
       summary: get token swaps
       description: Get existing token swaps
       operationId: getTokenSwaps
+      parameters:
+      - name: tokenIn
+        in: query
+        description: query swaps with convert from symbol
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: XYK
+      - name: tokenOut
+        in: query
+        description: query swaps with converted to symbol
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: USD
+      - name: dateFrom
+        in: query
+        description: filter from date
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+          example: 2020-02-27T09:12:33.001Z
+      - name: dateTo
+        in: query
+        description: filter to date
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: 2020-02-27T09:12:33.001Z
+      - name: limit
+        in: query
+        description: limit of items to retrieve per page
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          example: 100
+      - name: nextPageId
+        in: query
+        description: id specifing the next page, should be retrieved from response
+          from previous api call
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: c808226c-7af3-4461-bf1c-54d044f607d8
       responses:
         "200":
           description: token swaps
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TokenSwap'
+                $ref: '#/components/schemas/TokenSwaps'
 components:
   schemas:
     LiquidityPool:
@@ -236,3 +291,13 @@ components:
           type: string
           format: date-time
           example: 2020-02-27T09:12:33.001Z
+    TokenSwaps:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TokenSwap'
+        nextPageId:
+          type: string
+          example: c808226c-7af3-4461-bf1c-54d044f607d8
